@@ -172,4 +172,9 @@ I will focus on:
 
 ## Next Step
 
-The next task is to create the actual virtual environment and install the project dependencies so I can begin Phase 2 with a working baseline.
+Phases 1-8 are implemented: signal extraction, an honest rule-based baseline,
+a supervised ML comparison, hardening after an independent code review, and a
+Streamlit MVP (`app.py`). See `docs/devlog.md` for the full record, including
+the manual validation result (29/32 = 90.6% precision on the high-confidence
+set). Natural next steps are more labelled fights and a spatial/regional
+motion model.
