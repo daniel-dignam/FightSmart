@@ -1,0 +1,1 @@
+"""FightSmart detection subpackage."""
