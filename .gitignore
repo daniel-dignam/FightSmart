@@ -20,6 +20,7 @@ data/processed/*
 
 data/labels/*
 !data/labels/.gitkeep
+!data/labels/validation_results.csv
 
 # VS Code
 .vscode/

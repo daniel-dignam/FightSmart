@@ -143,6 +143,18 @@ def find_windows(
     ]
 
 
+def pad_windows(
+    windows: list[tuple[float, float]], pad_s: float
+) -> list[tuple[float, float]]:
+    """Extend each window by `pad_s` seconds on both sides.
+
+    Detected motion windows can end just before the action completes, so a
+    short buffer (e.g. 1-2 s) on either side ensures an extracted clip shows
+    the full sequence. Start times are clamped to >= 0. Returns a new list.
+    """
+    return [(max(0.0, s - pad_s), e + pad_s) for s, e in windows]
+
+
 def evaluate_windows(
     windows: list[tuple[float, float]],
     label_seconds: np.ndarray,

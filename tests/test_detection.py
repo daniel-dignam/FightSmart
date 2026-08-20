@@ -9,6 +9,7 @@ from src.detection.combine import (
     combined_score,
     evaluate_windows,
     find_windows,
+    pad_windows,
     relative_boost,
     rolling_mean,
 )
@@ -68,6 +69,18 @@ def test_find_windows_merges_close_runs():
     wins = find_windows(score, threshold=0.5, bin_s=0.5, min_gap_s=1.0, min_len_s=0.5)
     # gap of 1 bin = 0.5s <= min_gap 1.0s => merged into one window 0..1.0
     assert wins == [(0.0, 1.0)]
+
+
+def test_pad_windows_extends_both_sides():
+    assert pad_windows([(5.0, 6.0)], pad_s=1.5) == [(3.5, 7.5)]
+
+
+def test_pad_windows_clamps_start_at_zero():
+    assert pad_windows([(0.5, 2.0)], pad_s=1.0) == [(0.0, 3.0)]
+
+
+def test_pad_windows_empty():
+    assert pad_windows([], pad_s=2.0) == []
 
 
 def test_find_windows_none_above_threshold():
