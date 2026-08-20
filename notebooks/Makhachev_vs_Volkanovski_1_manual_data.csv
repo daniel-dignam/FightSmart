@@ -1,0 +1,97 @@
+ROUND,VIDEO_TIME,EVENT_TYPE,DESC,NOTE,CONFIDENCE
+0,3:46,fight_start,fight begins,start of event timeline,high
+1,4:35,significant_strike,body kick,"clean, open",high
+1,4:45-4:48,combination,"right to body, left hook",combo used often,high
+1,5:28-5:29,combination,right hook + left straight,"same combo, off of stance switch",high
+1,5:57,counter_attack,"block then, left hook",oppenent reacts from previous combo,medium
+1,6:33,significant_stike,body kick,open,medium
+1,6:38,knockdown,left hook off of exchange,"V steps in on leaping jab, M steps back into exchange, dips head and lands left hook from strong stance after exchange",high
+1,6:39,blocked_strike,head kick,"V is rocked, M lands right high kick",high
+1,6:41,significant_strike,right knee,"V level changed, M reacts with knee to head",high
+1,6:42,takedown_attempt,clinch off of knee,M goes for takedown off of fence after clinch,high
+1,6:46,back_take,back take off of clinch,V has double hands and creating space,high
+1,7:26,takedown,drag down to mat,M reacts and throws hips up and over,high
+1,7:30,back_take,no body lock leg triangle,V still has control of hands,high
+1,7:42,back_take,full body lock leg triangle,grounded back tage against fence,high
+1,8:07,submission_attempt,rear naked choke on chin,"mostly a crank / pressure, use of position",high
+1,8:47,round_1_end,round 1 ends,M has V back at end of round,high
+2,9:55,round_2_start,round 2 begins,,high
+2,10:34,exchange,missed strikes exchange,defence,medium
+2,10:45,significant_strike,body kick,M lands same as before,high
+2,10:47,exchange,missed strike exchange,hands up dipped head,medium
+2,10:54,exchange,landed exchange,both fighters land single shots,medium
+2,10:58,combination,pressure forward from V,no lands,medium
+2,10:59,takedown_attempt,M against fence drops level after pressure,single leg,high
+2,11:04,takedown,successful single leg,"drags leg out, V reacts by rolling with",high
+2,11:21,get_up,stands up from takedown,V finds his knees and stands up using cage,high
+2,11:48,takedown_attempt,M tries same again,V has wizzer,high
+2,11:49,takedown_defence,V forces wizzer over,,high
+2,11:56,clinch,exchange into clinch,,high
+2,13:17,significant_strike,leg kick,,high
+2,13:19,significant_strike,hard right straight off of back foot,,high
+2,13:24,combination,,,high
+2,13:29,significant_strike,hard right hand,,high
+2,13:38,significant_strike,jab,,high
+2,13:45,significant_strike,uppercut,,high
+2,13:55,significant_strike,leg kick,,high
+2,13:59,significant_strike,body jab,,high
+2,14:15,significant_strike,lead uppercut,,high
+2,14:16,clinch,strong thai clinch,,high
+2,14:55,round_2_end,,,high
+3,16:03,round_3_start,,,high
+3,16:31,significant_strike,left head kick from souhpaw,volk is fainting level changes ,high
+3,16:42,significant_strike,right hand from stance switch,,high
+3,17:09,clinch,thai clinch into knee,"M using this to keep range, V throws body shots here",high
+3,17:29,significant_strike,body kick,,high
+3,17:32,significant_strike,low kick,,high
+3,17:34,significant_strike,jab,,high
+3,17:38,significant_strike,body hook,,high
+3,18:03,significant_strike,low kick,,high
+3,18:19,clinch,,,high
+3,18:25,takedown_attempt,leg sweep,,high
+3,18:32,takedown,double leg off of clinch against fence,,high
+3,18:52,get_up,V succesfully gets up with M still on his back,,high
+3,19:02,reversal,grappling exchange. M reverses against fence,,high
+3,19:15,exchange,striking exchange against fence,,high
+3,19:46,significant_strike,right hand,,high
+3,20:07,significant_strike,low kick,,high
+3,20:31,takedown,leg sweep off of exchange,,high
+3,20:35,get_up,M stands up,,high
+3,20:46,takedown_attempt,off of clinch,,high
+3,21:45,round_3_end,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
