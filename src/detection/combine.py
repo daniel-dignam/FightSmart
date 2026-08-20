@@ -48,16 +48,38 @@ def rolling_mean(values: np.ndarray, window: int) -> np.ndarray:
     return out
 
 
+def _trailing_mean_exclusive(values: np.ndarray, window: int) -> np.ndarray:
+    """Mean of the `window` bins *before* each index (excludes the current).
+
+    Unlike `rolling_mean`, this does not include the current value, so a
+    spike at index i does not inflate its own baseline. At the very start
+    of the series there are no prior bins, so we fall back to the current
+    value (which yields a boost of ~1.0 there).
+    """
+    values = np.asarray(values, dtype=np.float64)
+    n = len(values)
+    out = np.empty(n, dtype=np.float64)
+    cum = np.concatenate(([0.0], np.cumsum(values)))
+    for i in range(n):
+        lo = max(0, i - window)
+        if lo == i:
+            out[i] = values[i]
+        else:
+            out[i] = (cum[i] - cum[lo]) / (i - lo)
+    return out
+
+
 def relative_boost(
     values: np.ndarray, window: int, min_floor: float = 1e-6
 ) -> np.ndarray:
-    """Energy relative to a trailing rolling baseline (values / baseline).
+    """Energy relative to a trailing baseline that EXCLUDES the current bin.
 
     Values near 1.0 mean "about as energetic as the recent average";
-    values well above 1.0 mean "a sudden burst". The `min_floor` guards
-    against dividing by (near) zero during quiet passages.
+    values well above 1.0 mean "a sudden burst". Excluding the current bin
+    from its own baseline makes true spikes stand out more sharply. The
+    `min_floor` guards against dividing by (near) zero during quiet passages.
     """
-    base = rolling_mean(values, window)
+    base = _trailing_mean_exclusive(values, window)
     return values / np.maximum(base, min_floor)
 
 
@@ -128,27 +150,43 @@ def evaluate_windows(
 ) -> dict:
     """Score candidate windows against ground-truth label times.
 
-    A candidate counts as a true positive if it is within `tolerance_s` of
-    at least one label; a label is "covered" once a candidate matches it.
-    Returns precision, recall, F1 and the raw tp/fp/fn counts.
+    Uses a greedy **one-to-one** match: each label is assigned to its
+    nearest, still-unused candidate within `tolerance_s`. This avoids
+    inflating recall when several candidates land on the same label.
+    A candidate with no label is a false positive; a label with no candidate
+    is a false negative. Returns precision, recall, F1 and tp/fp/fn counts.
     """
     label_seconds = np.asarray(label_seconds, dtype=np.float64)
-    matched = np.zeros(len(label_seconds), dtype=bool)
-    tp = 0
-    for s, e in windows:
-        center = (s + e) / 2.0
-        dists = np.abs(label_seconds - center)
-        hit = np.any(dists <= tolerance_s)
-        if hit:
-            tp += 1
-            matched[dists <= tolerance_s] = True
-    fn = int(np.sum(~matched))
-    fp = max(0, len(windows) - tp)
-    precision = tp / len(windows) if windows else 0.0
+    n_cand = len(windows)
+    n_label = len(label_seconds)
+
+    if n_cand == 0:
+        return {
+            "candidates": 0, "tp": 0, "fp": 0, "fn": n_label,
+            "precision": 0.0, "recall": 0.0, "f1": 0.0,
+        }
+
+    centers = np.array([(s + e) / 2.0 for s, e in windows])
+    used_cand = np.zeros(n_cand, dtype=bool)
+    used_label = np.zeros(n_label, dtype=bool)
+    pairs = 0
+    for li in range(n_label):
+        dists = np.abs(centers - label_seconds[li])
+        dists[used_cand] = np.inf
+        j = int(np.argmin(dists))
+        if dists[j] <= tolerance_s:
+            used_cand[j] = True
+            used_label[li] = True
+            pairs += 1
+
+    tp = pairs
+    fp = n_cand - pairs
+    fn = n_label - pairs
+    precision = tp / n_cand if n_cand else 0.0
     recall = tp / (tp + fn) if (tp + fn) else 0.0
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
     return {
-        "candidates": len(windows),
+        "candidates": n_cand,
         "tp": tp,
         "fp": fp,
         "fn": fn,

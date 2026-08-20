@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from src.features.dataset import (
     build_feature_matrix,
@@ -67,3 +68,11 @@ def test_build_feature_matrix_excludes_boundary_events():
     events = pd.DataFrame({"start_sec": [5.0], "is_highlight": [False]})
     _, _, y, _ = build_feature_matrix(times, motion, times, motion, events, bin_s=0.5, tol_s=3.0)
     assert y.sum() == 0
+
+
+def test_build_feature_matrix_empty_series_raises():
+    events = pd.DataFrame({"start_sec": [5.0], "is_highlight": [True]})
+    with pytest.raises(ValueError):
+        build_feature_matrix(
+            np.array([]), np.array([]), np.array([]), np.array([]), events, bin_s=0.5
+        )

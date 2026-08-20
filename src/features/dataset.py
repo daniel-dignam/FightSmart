@@ -77,7 +77,14 @@ def build_feature_matrix(
     Labels: 1 if any highlight event is within `tol_s` seconds of the bin.
     """
     if n_bins is None:
-        n_bins = int(max(motion_times[-1], audio_times[-1]) / bin_s) + 1
+        if len(motion_times) == 0 and len(audio_times) == 0:
+            raise ValueError("Cannot size the feature matrix from empty signal series")
+        last_t = 0.0
+        if len(motion_times) > 0:
+            last_t = max(last_t, float(motion_times[-1]))
+        if len(audio_times) > 0:
+            last_t = max(last_t, float(audio_times[-1]))
+        n_bins = int(last_t / bin_s) + 1
 
     bin_times, motion_bin = bin_aggregate(motion_times, motion, bin_s, n_bins)
     _, audio_bin = bin_aggregate(audio_times, audio_rms, bin_s, n_bins)

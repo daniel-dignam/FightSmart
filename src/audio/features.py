@@ -55,7 +55,12 @@ def windowed_rms(
     a strong baseline before adding spectral features if needed.
     """
     window = int(window_s * sample_rate)
-    hop = int((hop_s or window_s) * sample_rate)
+    if window <= 0:
+        raise ValueError("window_s must be positive")
+    hop_s = window_s if hop_s is None else hop_s
+    if hop_s <= 0:
+        raise ValueError("hop_s must be positive")
+    hop = int(hop_s * sample_rate)
     if len(samples) < window:
         return np.array([], dtype=np.float32), np.array([], dtype=np.float32)
 

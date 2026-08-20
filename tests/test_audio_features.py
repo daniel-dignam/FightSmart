@@ -63,3 +63,10 @@ def test_silence_has_very_low_energy(tmp_path):
     _, samples = load_wav_mono(path)
     _, rms = windowed_rms(samples, sr, window_s=1.0)
     assert np.all(rms < 1e-5)
+
+
+def test_windowed_rms_requires_positive_hop():
+    sr = 22050
+    samples = np.zeros(sr, dtype=np.float32)
+    with pytest.raises(ValueError):
+        windowed_rms(samples, sr, window_s=1.0, hop_s=0.0)

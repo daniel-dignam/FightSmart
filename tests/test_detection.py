@@ -70,6 +70,31 @@ def test_find_windows_merges_close_runs():
     assert wins == [(0.0, 1.0)]
 
 
+def test_find_windows_none_above_threshold():
+    score = np.zeros(10)
+    assert find_windows(score, threshold=0.5, bin_s=0.5, min_gap_s=0.5, min_len_s=0.5) == []
+
+
+def test_relative_boost_excludes_current_bin():
+    v = np.ones(20)
+    v[10] = 5.0
+    boost = relative_boost(v, window=5)
+    # baseline at i=10 uses only prior bins (all 1.0), so the spike is 5.0x.
+    assert np.isclose(boost[10], 5.0)
+    # a non-spike bin stays near 1.0.
+    assert np.isclose(boost[5], 1.0, atol=1e-2)
+
+
+def test_evaluate_windows_one_to_one_matching():
+    # Two candidates both within tolerance of the single label: only one is a
+    # true positive; the other is a false positive (no recall inflation).
+    wins = [(5.0, 5.5), (5.2, 5.7)]
+    labels = np.array([5.3])
+    res = evaluate_windows(wins, labels, tolerance_s=3.0)
+    assert res["tp"] == 1 and res["fp"] == 1 and res["fn"] == 0
+    assert res["precision"] == 0.5 and res["recall"] == 1.0
+
+
 def test_evaluate_windows_perfect():
     wins = [(5.0, 5.5)]
     labels = np.array([5.2])
