@@ -16,7 +16,7 @@ FightSmart is a personal AI-assisted MMA highlight detection project. The goal i
 
 ## Current Development Philosophy
 
-We are deliberately building iteratively:
+I am deliberately building iteratively:
 
 1. Working script
 2. Working pipeline
@@ -25,7 +25,7 @@ We are deliberately building iteratively:
 5. Deep learning
 6. AI-assisted reasoning
 
-This means we are not jumping directly to deep learning. We are learning by building a solid baseline first.
+This means I am not jumping directly to deep learning. I am learning by building a solid baseline first.
 
 ## Repository Structure
 
@@ -113,7 +113,7 @@ FightSmart/
 
 ## Engineering Standards
 
-We will practice good software engineering habits:
+I will practice good software engineering habits:
 
 - keep code simple and readable
 - use small, testable functions
@@ -162,7 +162,7 @@ pytest
 
 This project is not just about building the app. It is also about rebuilding strong engineering fundamentals.
 
-We will focus on:
+I will focus on:
 
 - Python habits and clarity
 - project structure and packaging
@@ -172,4 +172,4 @@ We will focus on:
 
 ## Next Step
 
-The next task is to create the actual virtual environment and install the project dependencies so we can begin Phase 2 with a working baseline.
+The next task is to create the actual virtual environment and install the project dependencies so I can begin Phase 2 with a working baseline.

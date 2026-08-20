@@ -20,7 +20,7 @@ Questions to answer:
 - what metadata is available from each video?
 - how long are fights?
 - what does a frame look like in practice?
-- how should we sample frames and extract features?
+- how should I sample frames and extract features?
 
 Outputs:
 
@@ -33,7 +33,7 @@ Questions to answer:
 
 - where are the loud moments in the fight?
 - how do crowd sounds differ from fight sounds?
-- what signal can we use as an excitement proxy?
+- what signal can I use as an excitement proxy?
 
 Outputs:
 
@@ -45,7 +45,7 @@ Outputs:
 Questions to answer:
 
 - what combinations of frame changes and audio spikes are useful?
-- how do we turn raw signals into candidate highlight windows?
+- how do I turn raw signals into candidate highlight windows?
 
 Outputs:
 
@@ -57,7 +57,7 @@ Outputs:
 Questions to answer:
 
 - what counts as a highlight?
-- how do we label events consistently?
+- how do I label events consistently?
 - what metadata should each label include?
 
 Outputs:

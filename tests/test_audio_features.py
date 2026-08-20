@@ -1,4 +1,4 @@
-"""Tests for src.audio.features using a small synthetic WAV we generate."""
+"""Tests for src.audio.features using a small synthetic WAV I generate."""
 
 from __future__ import annotations
 

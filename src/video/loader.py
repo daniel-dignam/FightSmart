@@ -4,8 +4,8 @@ Keeping this logic in `src/` (not the notebook) means exploration stays
 light and the same functions can be reused and unit-tested by later phases
 (feature extraction, rule-based highlight detection).
 
-OpenCV reads frames as BGR (blue-green-red) colour images, which is why we
-flag that convention everywhere it matters. Matplotlib expects RGB, so we
+OpenCV reads frames as BGR (blue-green-red) colour images, which is why I
+flag that convention everywhere it matters. Matplotlib expects RGB, so I
 expose a small BGR->RGB conversion for display.
 """
 
@@ -37,7 +37,7 @@ def video_metadata(path: str | Path) -> dict:
 
     Includes FPS, frame count, computed duration, resolution, and the
     fourcc codec string. FPS/frame_count can legitimately read as 0 for
-    some files, so we surface the raw values and let the caller decide.
+    some files, so I surface the raw values and let the caller decide.
     """
     cap = open_video(path)
     try:
@@ -67,7 +67,7 @@ def video_metadata(path: str | Path) -> dict:
 def frame_at_second(path: str | Path, second: float) -> Optional[cv2.Mat]:
     """Read the frame at a given time (in seconds).
 
-    We seek by setting CAP_PROP_POS_MSEC rather than by frame index, which
+    I seek by setting CAP_PROP_POS_MSEC rather than by frame index, which
     is more intuitive (callers think in time, not frame numbers) and works
     with variable-frame-rate content. Returns None if the seek lands past
     the end of the video.

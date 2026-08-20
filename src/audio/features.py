@@ -5,7 +5,7 @@ for crowd/commentary excitement: loud, energetic moments in the broadcast
 tend to coincide with significant fight action (big strikes, takedowns,
 submissions) and the crowd reacting to them.
 
-We keep the feature math here (testable, reusable) and leave the
+I keep the feature math here (testable, reusable) and leave the
 exploration and interpretation to the notebook.
 """
 
@@ -51,7 +51,7 @@ def windowed_rms(
     window size, i.e. non-overlapping windows).
 
     RMS is a simple, robust energy measure: a loud, exciting moment shows
-    up as a spike. We choose this over more complex features to establish
+    up as a spike. I choose this over more complex features to establish
     a strong baseline before adding spectral features if needed.
     """
     window = int(window_s * sample_rate)
@@ -69,7 +69,7 @@ def rms_to_db(rms: np.ndarray, reference: float | None = None) -> np.ndarray:
     """Convert RMS amplitude to decibels relative to `reference`.
 
     Defaults to a reference of 1.0 (full-scale digital), which puts values
-    in a familiar range (roughly -60 dB to 0 dB for normal audio). We add a
+    in a familiar range (roughly -60 dB to 0 dB for normal audio). I add a
     tiny epsilon to avoid log(0).
     """
     ref = reference if reference is not None else 1.0
