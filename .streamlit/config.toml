@@ -1,0 +1,4 @@
+[server]
+# Raise the upload size cap from Streamlit's 200 MB default so full-length
+# fight videos (a few GB) can be uploaded. Value is in MB.
+maxUploadSize = 3000

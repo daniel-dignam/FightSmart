@@ -35,48 +35,59 @@ st.caption(
 )
 
 uploaded = st.sidebar.file_uploader("Upload a fight video (.mp4)", type=["mp4"])
+local_path = st.sidebar.text_input("...or use a local file path", "")
 high_conf = st.sidebar.slider("High-confidence peak threshold", 1.2, 3.0, 1.8, 0.1)
 pad_s = st.sidebar.slider("Clip buffer (s)", 0.0, 3.0, 1.5, 0.5)
 
-if uploaded is not None:
+# Resolve the video source: a local path (streamed, no upload) or an upload.
+video_path: Path | None = None
+local_path = (local_path or "").strip()
+if local_path:
+    video_path = Path(local_path)
+    if not video_path.exists():
+        st.error(f"Local file not found: {video_path}")
+        st.stop()
+elif uploaded is not None:
     if getattr(uploaded, "size", 0) > MAX_UPLOAD_BYTES:
         st.error(
             f"File too large ({uploaded.size / 1e9:.1f} GB). "
             f"Please upload under {MAX_UPLOAD_BYTES / 1e9:.0f} GB."
         )
         st.stop()
-
     tmp = Path(tempfile.mkdtemp(prefix="fightsmart_app_"))
     # Sanitise the filename so a path in the upload name can't escape tmp.
     safe_name = Path(uploaded.name or "fight.mp4").name
     video_path = tmp / safe_name
     video_path.write_bytes(uploaded.getvalue())
 
-    with st.spinner(
-        "Analysing video. Motion extraction on a long video takes a few minutes..."
-    ):
-        result = detect_highlights(video_path, high_conf_peak=high_conf, pad_s=pad_s)
+if video_path is None:
+    st.info("Upload a fight video or enter a local file path to detect highlights.")
+    st.stop()
 
-    st.success(
-        f"Done — {result['n_windows']} high-confidence highlights "
-        f"in a {result['duration_s']:.0f}s video."
-    )
+scratch = Path(tempfile.mkdtemp(prefix="fightsmart_clips_"))
+with st.spinner(
+    "Analysing video. Motion extraction on a long video takes a few minutes..."
+):
+    result = detect_highlights(video_path, high_conf_peak=high_conf, pad_s=pad_s)
 
-    st.subheader("Highlight windows")
-    df = pd.DataFrame(result["windows"])
-    st.dataframe(df[["start_mmss", "end_mmss", "duration_s", "peak_score"]])
+st.success(
+    f"Done — {result['n_windows']} high-confidence highlights "
+    f"in a {result['duration_s']:.0f}s video."
+)
 
-    if result["windows"]:
-        options = [
-            f"{w['start_mmss']} - {w['end_mmss']}  (peak {w['peak_score']:.2f})"
-            for w in result["windows"]
-        ]
-        choice = st.selectbox("Preview a clip", options)
-        idx = options.index(choice)
-        w = result["windows"][idx]
-        clip = tmp / f"clip_{idx}.mp4"
-        with st.spinner("Cutting clip..."):
-            extract_clip(video_path, w["start_s"], w["end_s"], clip)
-        st.video(str(clip))
-else:
-    st.info("Upload a fight video in the sidebar to detect highlights.")
+st.subheader("Highlight windows")
+df = pd.DataFrame(result["windows"])
+st.dataframe(df[["start_mmss", "end_mmss", "duration_s", "peak_score"]])
+
+if result["windows"]:
+    options = [
+        f"{w['start_mmss']} - {w['end_mmss']}  (peak {w['peak_score']:.2f})"
+        for w in result["windows"]
+    ]
+    choice = st.selectbox("Preview a clip", options)
+    idx = options.index(choice)
+    w = result["windows"][idx]
+    clip = scratch / f"clip_{idx}.mp4"
+    with st.spinner("Cutting clip..."):
+        extract_clip(video_path, w["start_s"], w["end_s"], clip)
+    st.video(str(clip))

@@ -139,5 +139,12 @@ false positives (likely camera cuts / high-motion non-highlights).
 ```
 streamlit run app.py
 ```
-Upload a fight video in the sidebar; the app lists highlight windows and lets
-you preview a clip of any window.
+Two ways to give the app a video:
+- **Upload** a fight video in the sidebar (limit raised to 3 GB via
+  `.streamlit/config.toml`; note an upload is loaded into memory, so a multi-GB
+  file is slow).
+- **Local file path** — enter a path like `data/raw/<fight>.mp4` in the sidebar
+  and the app streams it directly (no upload, no size limit, no RAM blow-up).
+  This is the best option for your own 2 GB fight footage.
+
+The app lists highlight windows and lets you preview a clip of any window.
